@@ -12,5 +12,5 @@ class Timer:
 
     def do(self, func):
         func()
-        timer = threading.Timer(self.interval_time, self.do)
+        timer = threading.Timer(self.interval_time, self.do, args=(func, ))
         timer.start()

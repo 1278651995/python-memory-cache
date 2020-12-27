@@ -7,6 +7,7 @@ import time
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
 
+from memory_cache.storage import SimpleStorage
 from memory_cache.timer import Timer
 
 
@@ -78,7 +79,7 @@ class LRU(BaseAlgorithms):
     def get(self, key):
         if key in self.cache.keys():
             value = self.cache.pop(key)
-            cache_value = self._storage[key]
+            cache_value = self._storage.get(key)
             self.cache[key] = value
         else:
             cache_value = None
@@ -96,7 +97,7 @@ class LRU(BaseAlgorithms):
             if expire != -1:
                 expire_time = int(time.time())
             self.cache[key] = expire_time + expire
-            self._storage[key] = value
+            self._storage.set(key, value)
         return True
 
     def delete(self, key):

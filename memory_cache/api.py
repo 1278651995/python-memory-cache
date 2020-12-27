@@ -1,6 +1,7 @@
 # coding=gbk
 from abc import ABCMeta, abstractmethod
 
+from memory_cache.algorithms import LRU
 from memory_cache.storage import SimpleStorage
 
 """
@@ -9,12 +10,14 @@ from memory_cache.storage import SimpleStorage
 
 
 class BaseCacheAPI(metaclass=ABCMeta):
-    def __init__(self, storage=None, max_size=1024):
+    def __init__(self, storage=None, algorithms=None, max_size=1024):
         """
         :param storage: 存储类，[storage.BaseStorage]
         :param max_size: 默认存储最大内存为1024字节的数据
         """
         self._storage = storage if storage is not None else SimpleStorage()
+        self._alg = algorithms if algorithms is not None else LRU(self._storage)
+        self.max_size = max_size
 
     @abstractmethod
     def set(self, key, value, expire=-1):
@@ -24,7 +27,9 @@ class BaseCacheAPI(metaclass=ABCMeta):
         :param value: 存储的key对应的值
         :param expire: 存储超时时间，默认是不会过期
         """
-        self._hash_storage[key] = value
+        if len(value) > self.max_size:
+            return False
+        return self._alg.set(key, value, expire)
 
     @abstractmethod
     def get(self, key):
@@ -33,7 +38,7 @@ class BaseCacheAPI(metaclass=ABCMeta):
         :param key: 存储的键
         :return: value: 获取的值
         """
-        return self._hash_storage.get(key, None)
+        return self._alg.get(key)
 
     @abstractmethod
     def delete(self, key):
@@ -42,6 +47,4 @@ class BaseCacheAPI(metaclass=ABCMeta):
         :param key: 键
         :return: items: 存储的键的值
         """
-        value = self._hash_storage.get(key, None)
-        del self._hash_storage[key]
-        return value
+        return self._alg.delete(key)
