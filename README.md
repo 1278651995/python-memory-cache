@@ -13,7 +13,7 @@ pip install csy-memory-cache
 
 #### 结构图
 
-![结构图](./docs/结构图.png)
+![结构图](/docs/结构图.png)
 
 
 
