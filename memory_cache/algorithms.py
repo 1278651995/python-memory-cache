@@ -1,13 +1,13 @@
 # coding=gbk
-
-"""
-清理算法
-"""
 import time
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
 
 from memory_cache.timer import Timer
+
+"""
+清理算法
+"""
 
 
 class BaseAlgorithms(metaclass=ABCMeta):

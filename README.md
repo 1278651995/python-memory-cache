@@ -6,6 +6,11 @@ python实现内存的缓存器，用于小数据存储。
 
 默认使用LRU作为回收算法。
 
+#### 安装
+```shell script
+pip install csy-memory-cache
+```
+
 #### 结构图
 
 ![结构图](./docs/结构图.png)
