@@ -28,6 +28,7 @@ class BaseCacheAPI(metaclass=ABCMeta):
         :param expire: 存储超时时间，默认是不会过期
         """
         if len(value) > self.max_size:
+            print('超出内存限制')
             return False
         return self._alg.set(key, value, expire)
 
@@ -48,3 +49,14 @@ class BaseCacheAPI(metaclass=ABCMeta):
         :return: items: 存储的键的值
         """
         return self._alg.delete(key)
+
+
+class SimpleCacheAPI(BaseCacheAPI):
+    def set(self, key, value, expire=-1):
+        return super().set(key, value, expire)
+
+    def get(self, key):
+        return super().get(key)
+
+    def delete(self, key):
+        return super().delete(key)
