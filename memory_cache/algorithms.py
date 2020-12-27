@@ -7,7 +7,6 @@ import time
 from abc import ABCMeta, abstractmethod
 from collections import OrderedDict
 
-from memory_cache.storage import SimpleStorage
 from memory_cache.timer import Timer
 
 
@@ -103,6 +102,8 @@ class LRU(BaseAlgorithms):
     def delete(self, key):
         if len(self.cache) == 0:
             return True
+        if key not in self.cache.keys():
+            return False
         self.cache.pop(key)
         self._storage.delete(key)
         return True

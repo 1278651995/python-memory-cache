@@ -8,7 +8,7 @@ import threading
 
 class Timer:
     def __init__(self, interval_time=5):
-        self.interval_time = 5
+        self.interval_time = interval_time
 
     def do(self, func):
         func()
